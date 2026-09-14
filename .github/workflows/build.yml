@@ -96,3 +96,17 @@ jobs:
         name: APTKernel-${{ github.event.inputs.device }}-${{ github.event.inputs.target_os }}-${{ github.run_id }}
         path: APTKernel_*.zip
         compression-level: 0 # 已经被 zip 压缩过，无需再二次压缩
+
+    - name: Upload lmi ABI probe
+      if: ${{ github.event.inputs.device == 'lmi' && github.event.inputs.target_os == 'miui' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: lmi-abi-probe-${{ github.run_id }}
+        path: |
+          out_miui/.config
+          out_miui/Module.symvers
+          out_miui/include/config/kernel.release
+          out_miui/arch/arm64/boot/Image
+          out_miui/**/lmi-sm8250-overlay.dtbo
+        if-no-files-found: warn
+        compression-level: 0
