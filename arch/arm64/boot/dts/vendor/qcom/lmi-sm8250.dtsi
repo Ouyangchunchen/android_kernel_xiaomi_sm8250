@@ -304,6 +304,10 @@ And public attribution of xiaomi platforms(like J1 and so and)
 				   700000 500000>;
 };
 
+&bcl_soc {
+	status = "okay";
+};
+
 &pm8150b_fg {
 	qcom,battery-data = <&lmi_batterydata>;
 	qcom,rapid-soc-dec-en;
