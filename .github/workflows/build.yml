@@ -96,3 +96,13 @@ jobs:
         name: APTKernel-${{ github.event.inputs.device }}-${{ github.event.inputs.target_os }}-${{ github.run_id }}
         path: APTKernel_*.zip
         compression-level: 0 # 已经被 zip 压缩过，无需再二次压缩
+
+    - name: Upload lmi DTBO overlay
+      if: ${{ github.event.inputs.device == 'lmi' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: lmi-sm8250-overlay-dtbo-${{ github.run_id }}
+        path: |
+          **/lmi-sm8250-overlay.dtbo
+        if-no-files-found: error
+        compression-level: 0
