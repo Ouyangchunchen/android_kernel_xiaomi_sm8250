@@ -10778,8 +10778,11 @@ QDF_STATUS sme_power_debug_stats_req(
 		status = scheduler_post_message(QDF_MODULE_ID_SME,
 						QDF_MODULE_ID_WMA,
 						QDF_MODULE_ID_WMA, &msg);
-		if (!QDF_IS_STATUS_SUCCESS(status))
+		if (!QDF_IS_STATUS_SUCCESS(status)) {
 			sme_err("not able to post WDA_POWER_DEBUG_STATS_REQ");
+			mac_ctx->sme.power_debug_stats_context = NULL;
+			mac_ctx->sme.power_stats_resp_callback = NULL;
+		}
 		sme_release_global_lock(&mac_ctx->sme);
 	}
 	return status;

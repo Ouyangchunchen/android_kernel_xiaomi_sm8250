@@ -51,6 +51,9 @@
 
 static struct kobject *wlan_kobject;
 static struct kobject *driver_kobject;
+#ifdef WLAN_POWER_DEBUG
+static struct kobject *mipower_kobject;
+#endif
 static struct kobject *fw_kobject;
 static struct kobject *psoc_kobject;
 
@@ -683,12 +686,34 @@ void hdd_sysfs_create_powerstats_interface(void)
 	}
 
 	error = sysfs_create_file(driver_kobject, &power_stats_attribute.attr);
-	if (error)
+	if (error) {
 		hdd_err("could not create power_stats sysfs file");
+		return;
+	}
+
+	/* Keep the existing firmware-backed reader at the donor ABI path. */
+	mipower_kobject = kobject_create_and_add("peach_v2", kernel_kobj);
+	if (!mipower_kobject) {
+		hdd_err("could not create MiPowerHAL power stats kobject");
+		return;
+	}
+
+	error = sysfs_create_file(mipower_kobject, &power_stats_attribute.attr);
+	if (error) {
+		hdd_err("could not create MiPowerHAL power_stats sysfs file");
+		kobject_put(mipower_kobject);
+		mipower_kobject = NULL;
+	}
 }
 
 void hdd_sysfs_destroy_powerstats_interface(void)
 {
+	if (mipower_kobject) {
+		sysfs_remove_file(mipower_kobject, &power_stats_attribute.attr);
+		kobject_put(mipower_kobject);
+		mipower_kobject = NULL;
+	}
+
 	if (!driver_kobject) {
 		hdd_err("could not get driver kobject!");
 		return;

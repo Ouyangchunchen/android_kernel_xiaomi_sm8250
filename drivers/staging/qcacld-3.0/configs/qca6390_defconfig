@@ -111,6 +111,8 @@ ifneq ($(CONFIG_MOBILE_ROUTER), y)
 CONFIG_QCOM_TDLS := y
 
 CONFIG_WLAN_SYSFS := y
+# Export real firmware power statistics for MiPowerHAL.
+CONFIG_WLAN_POWER_DEBUG := y
 endif
 
 CONFIG_QCACLD_FEATURE_GREEN_AP := y
