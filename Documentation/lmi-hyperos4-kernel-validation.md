@@ -22,3 +22,9 @@ The Wi-Fi interface reuses actual firmware statistics; it does not synthesize va
 kernel/Makefile embeds lmi_stock-defconfig into /proc/config.gz for lmi. That embedded file must not be treated as the effective configuration of the running build. Use the actual build .config and runtime evidence.
 
 These commits contain kernel source changes only. Recovery ramdisk property changes and Android userspace patches are separate work.
+
+## Mainline merge (2026-10-11)
+
+Merged android17-aptusitu at 3cb7c24aad99a95800dbdb58639fce96750b76e2 in merge commit 0bbebbb8c0fc240c0e51765eb6e60e5bdc4c0159. Git reported no conflicts. The six previously modified kernel source files were unchanged by this merge, and the Baseband-guard dependency remains pinned.
+
+The Image hashes and successful build results above apply to the pre-merge a8adb967-based source. The merged source has not been rebuilt or tested on a device. Updated mainline configuration and subsystem changes require a new build and runtime validation.
